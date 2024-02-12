@@ -1,12 +1,32 @@
 pub mod dom;
 
+use termtree::Tree;
+use std::collections::HashMap;
+
+fn tree_maker(n: &dom::Node) -> Tree<String> {
+    let result = n.children.iter().fold(Tree::new(n.to_string()), |mut root, entry| {
+        match entry.node_type {
+            dom::NodeType::Element(_) => {
+                root.push(tree_maker(entry));
+            }
+            dom::NodeType::Comment(_) => {
+                root.push(Tree::new(entry.to_string()));
+            }
+            dom::NodeType::Text(_) => {
+                root.push(Tree::new(entry.to_string()));
+            }
+        }
+
+        root
+    });
+    result
+}
+
 fn main() {
-    // let node = dom::Node(vec![], dom::NodeType::Text(String::from("value")))
+    let h1 = dom::text(String::from("h1"));
+    let h2 = dom::text(String::from("h2"));
+    let div = dom::elem(String::from("div"), HashMap::new(), vec![h2]);
+    let node = dom::elem(String::from("div"), HashMap::new(), vec![h1, div]);
 
-    let node = dom::Node {
-      children: vec![],
-      node_type: dom::NodeType::Text(String::from("value"))
-    };
-
-    println!("{:?}", node);
+    println!("{}", tree_maker(&node));
 }
