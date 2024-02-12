@@ -42,7 +42,7 @@ impl fmt::Display for ElementData {
     }
 }
 
-type AttrMap = HashMap<String, String>;
+pub type AttrMap = HashMap<String, String>;
 
 pub fn text(data: String) -> Node {
     Node {
