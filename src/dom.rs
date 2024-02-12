@@ -17,7 +17,7 @@ impl fmt::Display for Node {
 pub enum NodeType {
     Text(String),
     Element(ElementData),
-    Comment(String)
+    Comment(String),
 }
 
 impl fmt::Display for NodeType {
@@ -42,10 +42,13 @@ impl fmt::Display for ElementData {
     }
 }
 
-type AttrMap = HashMap<String, String>; 
+type AttrMap = HashMap<String, String>;
 
 pub fn text(data: String) -> Node {
-    Node { children: Vec::new(), node_type: NodeType::Text(data)}
+    Node {
+        children: Vec::new(),
+        node_type: NodeType::Text(data),
+    }
 }
 
 pub fn elem(name: String, attrs: AttrMap, children: Vec<Node>) -> Node {
@@ -53,7 +56,7 @@ pub fn elem(name: String, attrs: AttrMap, children: Vec<Node>) -> Node {
         children: children,
         node_type: NodeType::Element(ElementData {
             tag_name: name,
-            attributes: attrs
-        })
+            attributes: attrs,
+        }),
     }
 }

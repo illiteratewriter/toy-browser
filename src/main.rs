@@ -1,24 +1,27 @@
 pub mod dom;
 
-use termtree::Tree;
 use std::collections::HashMap;
+use termtree::Tree;
 
 fn tree_maker(n: &dom::Node) -> Tree<String> {
-    let result = n.children.iter().fold(Tree::new(n.to_string()), |mut root, entry| {
-        match entry.node_type {
-            dom::NodeType::Element(_) => {
-                root.push(tree_maker(entry));
+    let result = n
+        .children
+        .iter()
+        .fold(Tree::new(n.to_string()), |mut root, entry| {
+            match entry.node_type {
+                dom::NodeType::Element(_) => {
+                    root.push(tree_maker(entry));
+                }
+                dom::NodeType::Comment(_) => {
+                    root.push(Tree::new(entry.to_string()));
+                }
+                dom::NodeType::Text(_) => {
+                    root.push(Tree::new(entry.to_string()));
+                }
             }
-            dom::NodeType::Comment(_) => {
-                root.push(Tree::new(entry.to_string()));
-            }
-            dom::NodeType::Text(_) => {
-                root.push(Tree::new(entry.to_string()));
-            }
-        }
 
-        root
-    });
+            root
+        });
     result
 }
 
