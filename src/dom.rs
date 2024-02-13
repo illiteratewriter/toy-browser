@@ -51,6 +51,13 @@ pub fn text(data: String) -> Node {
     }
 }
 
+pub fn comment(data: String) -> Node {
+    Node {
+        children: Vec::new(),
+        node_type: NodeType::Comment(data),
+    }
+}
+
 pub fn elem(name: String, attrs: AttrMap, children: Vec<Node>) -> Node {
     Node {
         children: children,

@@ -50,14 +50,40 @@ impl Parser {
     }
 
     fn parse_node(&mut self) -> dom::Node {
-        match self.next_char() {
-            '<' => self.parse_element(),
-            _ => self.parse_text(),
+        if self.starts_with("<!--") {
+            self.parse_comment()
+        } else if self.starts_with("<") {
+            self.parse_element()
+        } else {
+            self.parse_text()
         }
     }
 
     fn parse_text(&mut self) -> dom::Node {
         dom::text(self.consume_while(|c| c != '<'))
+    }
+
+    fn parse_comment(&mut self) -> dom::Node {
+        println!("DID I VENE COME HERE???");
+        assert!(self.consume_char() == '<');
+        assert!(self.consume_char() == '!');
+        assert!(self.consume_char() == '-');
+        assert!(self.consume_char() == '-');
+
+        let mut comment = String::new();
+
+        loop {
+            if self.starts_with("-->") {
+                break;
+            }
+            comment.push(self.consume_char());
+        }
+
+        assert!(self.consume_char() == '-');
+        assert!(self.consume_char() == '-');
+        assert!(self.consume_char() == '>');
+
+        dom::comment(comment)
     }
 
     fn parse_element(&mut self) -> dom::Node {

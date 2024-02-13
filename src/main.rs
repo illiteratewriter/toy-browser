@@ -27,15 +27,15 @@ fn tree_maker(n: &dom::Node) -> Tree<String> {
 
 fn main() {
     let s = String::from(
-        "qq<html>
+        "<html>
     <head>
       <title>Test</title>
     </head>
     <div class=\"outer\">
       <p class=\"inner\">Hello, <span id=\"name\">world!</span></p>
-      <p></p>
+      <p><!-- comment --></p>
       <p class=\"inner\" id=\"bye\">Goodbye!</p>
-    </div>
+    </div> 
   </html>
   ",
     );
