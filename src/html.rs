@@ -4,8 +4,8 @@ use crate::parser::ParserUtils;
 use std::collections::HashMap;
 
 struct Parser {
-    pos: usize,
-    input: String,
+    pub pos: usize,
+    pub input: String,
 }
 
 impl parser::ParserUtils for Parser {

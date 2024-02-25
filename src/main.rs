@@ -1,3 +1,4 @@
+pub mod css;
 pub mod dom;
 pub mod html;
 pub mod parser;
@@ -44,4 +45,20 @@ fn main() {
     let node = html::parse(s);
 
     println!("{}", tree_maker(&node));
+
+    let q = String::from(
+        "body {
+        display: flex;
+    }
+    
+    .inner {
+        color: red;
+        width: 20px;
+    }
+    ",
+    );
+
+    let cs = css::parse(q);
+
+    println!("{:?} ", cs);
 }
