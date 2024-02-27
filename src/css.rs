@@ -1,8 +1,18 @@
+use core::fmt;
 use crate::parser::ParserUtils;
 
 #[derive(Debug)]
 pub struct Stylesheet {
     pub rules: Vec<Rule>,
+}
+
+impl fmt::Display for Stylesheet {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        for rule in &self.rules {
+            write!(f, "{}", rule)?;
+        }
+        Ok(())
+    }
 }
 
 #[derive(Debug)]
@@ -11,11 +21,31 @@ pub struct Rule {
     pub declarations: Vec<Declaration>,
 }
 
+impl fmt::Display for Rule {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        for selector in &self.selectors {
+            write!(f, "\n\n\n{}", selector)?;
+        }
+        for declaration in &self.declarations {
+            write!(f, "    {}\n", declaration)?;
+        }
+        Ok(())
+    }
+}
+
 #[derive(Debug)]
 pub enum Selector {
     Simple(SimpleSelector),
 }
 
+impl fmt::Display for Selector {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Selector::Simple(s) => write!(f, "{}", s)
+        }
+    }
+}
+ 
 pub type Specificity = (usize, usize, usize);
 
 impl Selector {
@@ -36,10 +66,22 @@ pub struct SimpleSelector {
     class: Vec<String>,
 }
 
+impl fmt::Display for SimpleSelector {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "tag_name: {:?}, \nid: {:?}, \nclass: {:?}\n", self.tag_name, self.id, self.class)
+    }
+}
+
 #[derive(Debug)]
 pub struct Declaration {
     pub name: String,
     pub value: Value,
+}
+
+impl fmt::Display for Declaration {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}  ->  {:?}", self.name, self.value)
+    }
 }
 
 #[derive(Debug)]

@@ -60,5 +60,5 @@ fn main() {
 
     let cs = css::parse(q);
 
-    println!("{:?} ", cs);
+    println!("{} ", cs);
 }
