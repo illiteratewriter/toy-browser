@@ -2,6 +2,7 @@ pub mod css;
 pub mod dom;
 pub mod html;
 pub mod parser;
+pub mod style;
 
 use termtree::Tree;
 
@@ -42,9 +43,9 @@ fn main() {
   ",
     );
 
-    let node = html::parse(s);
+    let root_node = html::parse(s);
 
-    println!("{}", tree_maker(&node));
+    println!("{}", tree_maker(&root_node));
 
     let q = String::from(
         "body {
@@ -58,7 +59,11 @@ fn main() {
     ",
     );
 
-    let cs = css::parse(q);
+    let stylesheet = css::parse(q);
 
-    println!("{} ", cs);
+    println!("{} ", stylesheet);
+
+    let style_root = style::style_tree(&root_node, &stylesheet);
+
+    println!("{:?}", style_root);
 }

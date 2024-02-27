@@ -61,9 +61,9 @@ impl Selector {
 
 #[derive(Debug)]
 pub struct SimpleSelector {
-    tag_name: Option<String>,
-    id: Option<String>,
-    class: Vec<String>,
+    pub tag_name: Option<String>,
+    pub id: Option<String>,
+    pub class: Vec<String>,
 }
 
 impl fmt::Display for SimpleSelector {
@@ -84,21 +84,19 @@ impl fmt::Display for Declaration {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Value {
     Keyword(String),
     Length(f32, Unit),
     ColorValue(Color),
-    // insert more values here
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Unit {
     Px,
-    // insert more units here
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Default)]
 pub struct Color {
     pub r: u8,
     pub g: u8,
