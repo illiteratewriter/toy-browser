@@ -1,6 +1,7 @@
 use std::collections::{HashMap};
 use crate::css;
 use crate::dom;
+use core::fmt;
 
 use dom::{Node, NodeType, ElementData};
 use css::{Stylesheet, Rule, Selector, SimpleSelector, Value, Specificity};
@@ -13,6 +14,13 @@ pub struct StyledNode<'a> {
   pub node: &'a Node,
   pub specified_values: PropertyMap,
   pub children: Vec<StyledNode<'a>>
+}
+
+
+impl fmt::Display for StyledNode<'_> {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+      write!(f, "{} {:?}", self.node.to_string(), self.specified_values)
+  }
 }
 
 fn matches(elem: &ElementData, selector: &Selector) -> bool {

@@ -28,6 +28,28 @@ fn tree_maker(n: &dom::Node) -> Tree<String> {
     result
 }
 
+fn style_tree_maker(n: &style::StyledNode) -> Tree<String> {
+    let result = n
+        .children
+        .iter()
+        .fold(Tree::new(n.to_string()), |mut root, entry| {
+            match entry.node.node_type {
+                dom::NodeType::Element(_) => {
+                    root.push(style_tree_maker(entry));
+                }
+                dom::NodeType::Comment(_) => {
+                    root.push(Tree::new(entry.to_string()));
+                }
+                dom::NodeType::Text(_) => {
+                    root.push(Tree::new(entry.to_string()));
+                }
+            }
+
+            root
+        });
+    result
+}
+
 fn main() {
     let s = String::from(
         "<html>
@@ -48,7 +70,7 @@ fn main() {
     println!("{}", tree_maker(&root_node));
 
     let q = String::from(
-        "body {
+        "span {
         display: flex;
     }
     
@@ -65,5 +87,5 @@ fn main() {
 
     let style_root = style::style_tree(&root_node, &stylesheet);
 
-    println!("{:?}", style_root);
+    println!("{}", style_tree_maker(&style_root));
 }
